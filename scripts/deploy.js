@@ -2,7 +2,10 @@ const hre = require("hardhat");
 
 async function main() {
 
-  const driveContract = await hre.ethers.deployContract("DriveContract");
+  const name = "BlockDrive";
+  const symbol = "BD";
+
+  const driveContract = await hre.ethers.deployContract("DriveContract", [name, symbol]);
   console.log("DriveContract deployed to",driveContract.address);
 }
 
