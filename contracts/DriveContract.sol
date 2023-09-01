@@ -35,9 +35,10 @@ contract DriveContract is ERC721, Ownable {
         _mint(msg.sender, tokenId);
         tokenIdToMetadata[tokenId] = NFTMetadata(tokenId, ipfsHash, caption, msg.sender);
         addressToMetaData[msg.sender].push(NFTMetadata(tokenId, ipfsHash, caption, msg.sender));
-    }
+    }  
 
     function getNFT(address user) external view returns (NFTMetadata[] memory) {
+        require(user==msg.sender || accessMap[user][msg.sender].granted,"You don't have access");
         return addressToMetaData[user];
     }
 
