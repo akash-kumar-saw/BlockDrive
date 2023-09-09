@@ -5,6 +5,7 @@ const share = ({state}) => {
     const [nftMetaData, setNftMetaData] = useState([]);
     const [shareList, setShareList] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedNft, setSelectedNft] = useState(null);
 
     function openModal() {
         setModalOpen(true);
@@ -12,6 +13,23 @@ const share = ({state}) => {
 
     function closeModal() {
         setModalOpen(false);
+    }
+
+    const selectNFT = (nft) => {
+        setSelectedNft(nft);
+    }
+    
+    const shareNFT = () => {
+        const {contract}=state;
+        const addressTo = document.getElementById("addressTo").value;
+    
+        const Func = async()=>{
+            console.log(selectedNft.tokenId.toNumber())
+          await contract.shareAccess(addressTo, selectedNft.tokenId.toNumber());
+          console.log("Shared Successfully")
+        }
+
+        contract && Func();
     }
 
     const getShareList = () => {
@@ -48,17 +66,20 @@ const share = ({state}) => {
                 <h2 className="text-2xl  text-black font-bold text-center">Share NFT/Image</h2>
             </div>
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-full w-full">
-                <div className="flex items-center justify-center px-5 w-full h-[100px] shadow-md shadow-black">
-                    <input className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
-                    <button className="bg-green-500 hover:bg-green-600 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
+                {
+                    selectedNft && <div className="flex items-center justify-center px-5 w-full h-[100px] shadow-md shadow-black">
+                    <input id="addressTo" className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
+                    <button onClick={shareNFT} className="bg-green-500 hover:bg-green-600 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
                 </div>
+                }
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
-                            <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
-                            <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`}>
-                                <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
-                            </a>
+                        <div onClick={() => selectNFT(nft)} className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
+                            <div className="flex justify-end">
+                                <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
+                                <input type="radio" name="selectedNFT" checked={selectedNft === nft} onChange={() => selectNFT(nft)} />
+                            </div>
+                            <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
                             <h3 className="font-bold">{nft.caption}</h3>
                         </div>
                     ))}
