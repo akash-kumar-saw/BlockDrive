@@ -1,16 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
-import { ethers } from 'ethers';
-import ABI from "../ABI.json";
 
 import bloackchain from '../assets/blockchain.png';
 
-const sidebar = ({state, saveState}) => {
+function sidebar() {
     const navigate = useNavigate();
 
-    const [connected,setConnected]=useState(false);
-    const [accountAddress, setAccountAddress] = useState("");
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("");
@@ -24,7 +19,7 @@ const sidebar = ({state, saveState}) => {
         
         setFile(null);
         setFileName("");
-    };
+     };
 
     const retrieveFile = (e) => {
         const data = e.target.files[0];
@@ -35,69 +30,7 @@ const sidebar = ({state, saveState}) => {
         };
         setFileName(e.target.files[0].name);
         e.preventDefault();
-    };
-
-    const connectWallet =async()=>{
-        try{
-            const contractAddress = "0x658C9e7769da169E78E99B3e77BaCC71ec7c0997";
-            if (window.ethereum) {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                const signer = provider.getSigner();
-                const accounts = await provider.send("eth_requestAccounts", []);
-
-                const contract = new ethers.Contract(contractAddress, ABI, signer);
-
-                setConnected(true);
-                setAccountAddress(accounts[0]);
-                saveState({web3:provider,contract:contract,address:accounts[0]});
-
-            } else {
-                console.error('No Ethereum provider found');
-            }
-        }catch(error){
-            alert(error);
-        }  
-    }
-
-    const submitImageToPinata = async () => {
-        if (file) {
-            try {
-                const caption = document.getElementById('caption').value;
-                const formData = new FormData();
-                formData.append("file", file);
-        
-                const pinataEndpoint = "https://api.pinata.cloud/pinning/pinFileToIPFS";
-        
-                const headers = {
-                    pinata_api_key: "b67a409c6fbd47e86ab7",
-                    pinata_secret_api_key: "926ca103c6c57c2d0fa379783d5248622a9e8b691a06154165e353c131e34580",
-                };
-
-                const options = {
-                    pinataMetadata: {
-                      name: fileName,
-                    },
-                };
-      
-                const response = await axios.post(pinataEndpoint, formData, {headers, options});
-      
-                if (response.status === 200) {
-                    const { IpfsHash } = response.data;
-                    console.log("IPFS Hash:", IpfsHash);
-
-                    const {contract} = state;
-                    await contract.mintNFT(IpfsHash, caption);
-                    console.log(caption);
-
-                    closeDialog();
-                } else {
-                    console.error("Failed to upload to Pinata:", response.data);
-                }
-            }catch (error) {
-                console.error("Error uploading image to Pinata:", error);
-            }
-        }
-    };
+      };
     
     return (
         <>
@@ -106,7 +39,6 @@ const sidebar = ({state, saveState}) => {
                 <img src={bloackchain} className="w-[40px] h-[40px]" />
                 <h2 className="text-2xl text-blue-500 font-bold text-center ml-2">BlockDrive</h2>
             </div>
-            <button onClick={connectWallet} className={`text-xl ${ connected ? 'bg-green-500' : 'bg-red-500' } ${ connected ? 'hover:bg-green-600' : 'hover:bg-red-600' } font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
             <button onClick={openDialog} className="text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] hover:bg-blue-300">Add Image</button>
             <button onClick={()=>navigate('/')} className="text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] focus:bg-blue-300 hover:bg-gray-400">My Drive</button>
             <button onClick={()=>navigate('/Access')} className="text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] focus:bg-blue-300 hover:bg-gray-400">Access Manager</button>
@@ -122,14 +54,13 @@ const sidebar = ({state, saveState}) => {
                 <div>
                     <img src={URL.createObjectURL(file)} alt={fileName} className="m-2 max-h-32" />
                     <p className="font-semibold m-2">{fileName}</p>
-                    <input id='caption' className="border-2 border-black w-full focus:bg-gray-100 font-semibold rounded-md shadow-md shadow-black h-[50px]" placeholder="Caption"/>
                 </div>
                 )}
                 <div className="flex justify-center">
                     <button onClick={closeDialog} className="m-4 bg-red-500 text-white rounded-md p-2 hover:bg-red-600 w-[100px]">
                     Cancel
                     </button>
-                    <button disabled={!file} onClick={submitImageToPinata} className="m-4 bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 w-[100px]">
+                    <button disabled={!file} className="m-4 bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 w-[100px]">
                     Submit
                     </button>
                 </div>
