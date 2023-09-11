@@ -3,7 +3,7 @@ import Loadbar from "../layouts/Loadbar"
 import Listview from "../layouts/Listview"
 import Notification from "../layouts/Notification"
 
-const share = ({state}) => {
+const share = ({state, refresh}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [shareList, setShareList] = useState([]);
@@ -11,6 +11,19 @@ const share = ({state}) => {
     const [selectedNft, setSelectedNft] = useState(null);
     const [isLoadbar, setLoadbar] = useState(false);
     const [userMessage, setUserMessage] = useState(null);
+
+    useEffect(()=>{
+        const {contract, address}=state;
+    
+        const Func = async()=>{
+          const content = await contract.getNFT(address);
+          setNftMetaData(content);
+          console.log(content)
+        }
+
+        contract && Func();
+        
+    },[state, refresh])
 
     const openListview = () => {
         setListview(true);
@@ -66,20 +79,6 @@ const share = ({state}) => {
         closeLoadbar();
         openListview();
     }
-
-
-    useEffect(()=>{
-        const {contract, address}=state;
-    
-        const Func = async()=>{
-          const content = await contract.getNFT(address);
-          setNftMetaData(content);
-          console.log(content)
-        }
-
-        contract && Func();
-        
-    },[state])
 
     return (
         <>
