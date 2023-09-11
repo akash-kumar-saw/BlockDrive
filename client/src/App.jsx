@@ -13,19 +13,25 @@ const App = () => {
     contract:null,
     address:null
   })
+
+  const [refresh, setRefresh] = useState(0);
+
+  const refreshPage = () => {
+    setRefresh(refresh+1);
+  }
+  
   const saveState=(state)=>{
-    console.log(state);
     setState(state);
   }
 
   return (
     <Router>
       <div className="flex bg-gray-200">  
-      <Sidebar saveState={saveState} state={state}/>
+      <Sidebar saveState={saveState} state={state} refreshPage={refreshPage}/>
       <Routes>
-        <Route exact path="/" element={<Home state={state}/>}/>
+        <Route exact path="/" element={<Home state={state} refresh={refresh}/>}/>
         <Route exact path="/Access" element={<Access state={state}/>}/>
-        <Route exact path="/Share" element={<Share state={state}/>}/>
+        <Route exact path="/Share" element={<Share state={state} refresh={refresh}/>}/>
       </Routes>
       </div>
     </Router>
