@@ -8,7 +8,7 @@ import Notification from "./Notification"
 
 import bloackchain from '../assets/blockchain.png';
 
-const sidebar = ({state, saveState}) => {
+const sidebar = ({state, saveState, refreshPage}) => {
     const navigate = useNavigate();
 
     const [connected,setConnected]=useState(false);
@@ -67,7 +67,7 @@ const sidebar = ({state, saveState}) => {
 
                 window.ethereum.on('accountsChanged', (accounts) => {
                     setAccountAddress(accounts[0]);
-                    saveState({address:accounts[0]});
+                    saveState({web3:provider,contract:contract,address:accounts[0]});
                 });
 
             } else {
@@ -125,8 +125,9 @@ const sidebar = ({state, saveState}) => {
                 <img src={bloackchain} className="w-[40px] h-[40px]" />
                 <h2 className="text-2xl text-blue-500 font-bold text-center ml-2">BlockDrive</h2>
             </div>
-            <button onClick={connectWallet} className={`text-xl ${ connected ? 'bg-green-500' : 'bg-red-500' } ${ connected ? 'hover:bg-green-600' : 'hover:bg-red-600' } font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
+            <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-green-500 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
             <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Add Image</button>
+            <button onClick={()=>{refreshPage()}} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Refresh</button>
             <button onClick={()=>{navigate('/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>My Drive</button>
             <button onClick={()=>{navigate('/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Access Manager</button>
             <button onClick={()=>{navigate('/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Share NFT/Image</button>
