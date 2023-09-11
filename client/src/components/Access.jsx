@@ -1,20 +1,34 @@
 import {useState} from "react";
+import Loadbar from "../layouts/Loadbar"
+import Notification from "../layouts/Notification"
+import Listview from "../layouts/Listview"
 
 const access = ({state}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [accessList, setAccessList] = useState([]);
-    const [isModalOpen, setModalOpen] = useState(false);
+    const [isListview, setListview] = useState(false);
+    const [isLoadbar, setLoadbar] = useState(false);
+    const [userMessage, setUserMessage] = useState(null);
 
-    function openModal() {
-        setModalOpen(true);
+    const openListview = () => {
+        setListview(true);
     }
 
-    function closeModal() {
-        setModalOpen(false);
+    const closeListview = () => {
+        setListview(false);
+    }
+
+    const openLoadbar = () => {
+        setLoadbar(true);
+    }
+
+    const closeLoadbar = () => {
+        setLoadbar(false);
     }
 
     const getAccessList = () => {
+        openLoadbar();
         const {contract}=state;
     
         const Func = async()=>{
@@ -24,44 +38,51 @@ const access = ({state}) => {
         }
 
         contract && Func();
-        openModal();
+
+        closeLoadbar();
+        openListview();
     }
 
     const viewImage = () => {
+        openLoadbar();
         const {contract}=state;
         const address = document.getElementById("viewImage").value;
     
         const Func = async()=>{
           const content = await contract.getNFT(address);
           setNftMetaData(content);
-          console.log(content)
         }
 
-        contract && Func(); 
+        contract && Func();
+        closeLoadbar();
     }
 
     const allowAccess = () => {
+        openLoadbar();
         const {contract}=state;
         const address = document.getElementById("viewImage").value;
     
         const Func = async()=>{
           await contract.allowAccess(address);
-          console.log("Access Allowed Successfully");
+          setUserMessage("Access Allowed Successfully!");
         }
 
         contract && Func(); 
+        closeLoadbar();
     }
 
     const disallowAccess = () => {
+        openLoadbar();
         const {contract}=state;
         const address = document.getElementById("viewImage").value;
     
         const Func = async()=>{
           await contract.disallowAccess(address);
-          console.log("Access Disallowed Successfully");
+          setUserMessage("Access Disallowed Successfully!");
         }
 
         contract && Func(); 
+        closeLoadbar();
     }
 
 
@@ -96,29 +117,17 @@ const access = ({state}) => {
             </div>
         </div>
 
-        {isModalOpen && (
-            <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-900 bg-opacity-50">
-                <div className="flex flex-col justify-center bg-white p-4 rounded-lg shadow-lg shadow-black">
-                    <div className="flex items-center justify-center gap-2 font-bold">
-                        <h6>Access List</h6>
-                    </div>
-                    <br />
-                    <div className="max-h-[300px] overflow-auto" >
-                        <ul className="list-decimal px-8 font-Poppins sm:text-sm text-xs !leading-5">
-                            {accessList.map((address, index) => (
-                            <li key={index}>{address}</li>
-                            ))}
-                        </ul>
-                        <br />
-                    </div>
-                    <div className="flex justify-end">
-                        <button onClick={closeModal} className="btn font-semibold rounded-br-xl border-2 border-black p-2 m-2">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
+        {
+            isListview && (<Listview title="Access List" list={accessList} close={closeListview} />)
+        }
+
+        {
+            isLoadbar && (<Loadbar />)
+        }
+
+        {
+            userMessage!=null && (<Notification message={userMessage} setUserMessage={setUserMessage} />)
+        }
         </>
     )
 }
