@@ -18,6 +18,7 @@ const sidebar = ({state, saveState}) => {
     const [fileName, setFileName] = useState("");
     const [isLoadbar, setLoadbar] = useState(false);
     const [userMessage, setUserMessage] = useState(null);
+    const [navigation, setNavigation] = useState("");
 
     const openDialog = () => {
         setDialogOpen(true);
@@ -60,8 +61,14 @@ const sidebar = ({state, saveState}) => {
                 const contract = new ethers.Contract(contractAddress, ABI, signer);
 
                 setConnected(true);
+                setNavigation("Home");
                 setAccountAddress(accounts[0]);
                 saveState({web3:provider,contract:contract,address:accounts[0]});
+
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    setAccountAddress(accounts[0]);
+                    saveState({address:accounts[0]});
+                });
 
             } else {
                 setUserMessage("MetaMask Not Found");
@@ -119,10 +126,10 @@ const sidebar = ({state, saveState}) => {
                 <h2 className="text-2xl text-blue-500 font-bold text-center ml-2">BlockDrive</h2>
             </div>
             <button onClick={connectWallet} className={`text-xl ${ connected ? 'bg-green-500' : 'bg-red-500' } ${ connected ? 'hover:bg-green-600' : 'hover:bg-red-600' } font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
-            <button onClick={openDialog} className="text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] hover:bg-blue-300">Add Image</button>
-            <button onClick={()=>navigate('/')} className="text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] focus:bg-blue-300 hover:bg-gray-400">My Drive</button>
-            <button onClick={()=>navigate('/Access')} className="text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] focus:bg-blue-300 hover:bg-gray-400">Access Manager</button>
-            <button onClick={()=>navigate('/Share')} className="text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] focus:bg-blue-300 hover:bg-gray-400">Share NFT/Image</button>
+            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Add Image</button>
+            <button onClick={()=>{navigate('/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>My Drive</button>
+            <button onClick={()=>{navigate('/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Access Manager</button>
+            <button onClick={()=>{navigate('/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Share NFT/Image</button>
         </div>
 
         {isDialogOpen && (
