@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ethers } from 'ethers';
 import ABI from "../ABI.json";
+import Loadbar from "./Loadbar"
+import Notification from "./Notification"
 
 import bloackchain from '../assets/blockchain.png';
 
@@ -14,6 +16,8 @@ const sidebar = ({state, saveState}) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("");
+    const [isLoadbar, setLoadbar] = useState(false);
+    const [userMessage, setUserMessage] = useState(null);
 
     const openDialog = () => {
         setDialogOpen(true);
@@ -25,6 +29,14 @@ const sidebar = ({state, saveState}) => {
         setFile(null);
         setFileName("");
     };
+
+    const openLoadbar = () => {
+        setLoadbar(true);
+    }
+
+    const closeLoadbar = () => {
+        setLoadbar(false);
+    }
 
     const retrieveFile = (e) => {
         const data = e.target.files[0];
@@ -52,16 +64,17 @@ const sidebar = ({state, saveState}) => {
                 saveState({web3:provider,contract:contract,address:accounts[0]});
 
             } else {
-                console.error('No Ethereum provider found');
+                setUserMessage("MetaMask Not Found");
             }
         }catch(error){
-            alert(error);
+            setUserMessage(error);
         }  
     }
 
     const submitImageToPinata = async () => {
         if (file) {
             try {
+                openLoadbar();
                 const caption = document.getElementById('caption').value;
                 const formData = new FormData();
                 formData.append("file", file);
@@ -83,18 +96,17 @@ const sidebar = ({state, saveState}) => {
       
                 if (response.status === 200) {
                     const { IpfsHash } = response.data;
-                    console.log("IPFS Hash:", IpfsHash);
 
                     const {contract} = state;
                     await contract.mintNFT(IpfsHash, caption);
-                    console.log(caption);
-
-                    closeDialog();
+                    setUserMessage("NFT Minted Successfully!");
                 } else {
-                    console.error("Failed to upload to Pinata:", response.data);
+                    setUserMessage("Failed to upload to IPFS : ", response.data);
                 }
+                closeDialog();
+                closeLoadbar();
             }catch (error) {
-                console.error("Error uploading image to Pinata:", error);
+                setUserMessage("Error uploading image to IPFS :", error);
             }
         }
     };
@@ -136,6 +148,14 @@ const sidebar = ({state, saveState}) => {
             </div>
             </div>
         )}
+
+        {
+            userMessage!=null && (<Notification message={userMessage} setUserMessage={setUserMessage} />)
+        }
+
+        {
+            isLoadbar && (<Loadbar />)
+        }
         </>
     )
 }

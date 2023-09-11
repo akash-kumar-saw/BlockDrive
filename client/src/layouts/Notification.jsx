@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const notification = ({ message }) => {
+const notification = ({ message, setUserMessage }) => {
 
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
+      setUserMessage(null);
     }, 5000);
 
     return () => clearTimeout(timer);
