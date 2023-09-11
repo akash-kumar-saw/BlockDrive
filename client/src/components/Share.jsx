@@ -33,18 +33,22 @@ const share = ({state}) => {
     }
     
     const shareNFT = () => {
-        openLoadbar();
-        const {contract}=state;
         const addressTo = document.getElementById("addressTo").value;
-    
-        const Func = async()=>{
-            console.log(selectedNft.tokenId.toNumber())
-          await contract.shareAccess(addressTo, selectedNft.tokenId.toNumber());
-          setUserMessage("NFT/Image Shared Successfully!")
-        }
 
-        contract && Func();
-        closeLoadbar();
+        if (addressTo!="") {
+            openLoadbar();
+            const {contract}=state;
+            const Func = async()=>{
+                console.log(selectedNft.tokenId.toNumber())
+                await contract.shareAccess(addressTo, selectedNft.tokenId.toNumber());
+                setUserMessage("NFT/Image Shared Successfully!")
+            }
+            contract && Func();
+            closeLoadbar();
+        }
+        else {
+            setUserMessage("Please provide a Etherium Address")
+        }
     }
 
     const getShareList = () => {

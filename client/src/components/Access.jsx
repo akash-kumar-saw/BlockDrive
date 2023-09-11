@@ -44,45 +44,60 @@ const access = ({state}) => {
     }
 
     const viewImage = () => {
-        openLoadbar();
-        const {contract}=state;
         const address = document.getElementById("viewImage").value;
     
-        const Func = async()=>{
-          const content = await contract.getNFT(address);
-          setNftMetaData(content);
-        }
+        if (address!="") {
+            openLoadbar();
+            const {contract}=state;
 
-        contract && Func();
-        closeLoadbar();
+            const Func = async()=>{
+            const content = await contract.getNFT(address);
+            setNftMetaData(content);
+            }
+            contract && Func();
+            closeLoadbar();
+        }
+        else {
+            setUserMessage("Please provide a Etherium Address");
+        }
     }
 
     const allowAccess = () => {
-        openLoadbar();
-        const {contract}=state;
         const address = document.getElementById("viewImage").value;
     
-        const Func = async()=>{
-          await contract.allowAccess(address);
-          setUserMessage("Access Allowed Successfully!");
-        }
+        if (address!="") {
+            openLoadbar();
+            const {contract}=state;
 
-        contract && Func(); 
-        closeLoadbar();
+            const Func = async()=>{
+            await contract.allowAccess(address);
+            setUserMessage("Access Allowed Successfully!");
+            }
+            contract && Func(); 
+            closeLoadbar();
+        }
+        else {
+            setUserMessage("Please provide a Etherium Address");
+        }
     }
 
-    const disallowAccess = () => {
-        openLoadbar();
-        const {contract}=state;
+    const disallowAccess = () => {        
         const address = document.getElementById("viewImage").value;
     
-        const Func = async()=>{
-          await contract.disallowAccess(address);
-          setUserMessage("Access Disallowed Successfully!");
-        }
+        if (address!="") {
+            openLoadbar();
+            const {contract}=state;
 
-        contract && Func(); 
-        closeLoadbar();
+            const Func = async()=>{
+            await contract.disallowAccess(address);
+            setUserMessage("Access Disallowed Successfully!");
+            }
+            contract && Func(); 
+            closeLoadbar();
+        }
+        else {
+            setUserMessage("Please provide a Etherium Address");
+        }
     }
 
 
