@@ -14,7 +14,7 @@ const notification = ({ message, setUserMessage }) => {
   }, []);
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 m-4 p-4 flex justify-center rounded-xl shadow-lg shadow-black bg-white text-black font-bold overflow-y-auto ${isVisible ? 'block' : 'hidden'}`}>
+    <div className={`fixed bottom-0 left-0 right-0 m-4 p-4 flex justify-center rounded-xl shadow-lg border-2 border-black shadow-black bg-white text-black font-bold overflow-y-auto ${isVisible ? 'block' : 'hidden'}`}>
       {message}
     </div>
   );
