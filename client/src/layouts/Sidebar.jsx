@@ -52,7 +52,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
 
     const connectWallet =async()=>{
         try{
-            const contractAddress = "0x658C9e7769da169E78E99B3e77BaCC71ec7c0997";
+            const contractAddress = "0x7A78dcead67CF208D4A8a6E8137A9CE1bAe515e3";
             if (window.ethereum) {
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 const signer = provider.getSigner();
