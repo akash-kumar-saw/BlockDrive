@@ -2,6 +2,8 @@
 
 BlockDrive is a decentralized image hosting platform built on the Ethereum blockchain. It allows users to upload images in IPFS as Non-Fungible Tokens (NFTs) and share access with other Ethereum addresses. Similar to Google Drive, BlockDrive provides a web interface for easy and intuitive interactions with the platform.
 
+## Deployed @ https://akash-kumar-saw.github.io/BlockDrive/
+
 ## Features
 
 - **NFT Image Hosting:** Upload images as unique NFTs on the Ethereum blockchain.
@@ -10,7 +12,7 @@ BlockDrive is a decentralized image hosting platform built on the Ethereum block
 - **Web Interface:** A user-friendly web interface powered by JavaScript React for easy interactions.
 - **Secure and Transparent:** Leverage the security and transparency of the Ethereum blockchain for image ownership and access control.
 
-## Installation
+## Run Locally
 
 1. Clone the repository: `git clone https://github.com/akash-kumar-saw/blockdrive.git`
 2. Install dependencies: 
