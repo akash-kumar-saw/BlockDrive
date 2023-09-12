@@ -32,9 +32,12 @@ const access = ({state}) => {
         const {contract}=state;
     
         const Func = async()=>{
-          const content = await contract.getAccessList();
-          setAccessList(content);
-          console.log(content)
+            const content = await contract.getAccessList();
+            
+            content.map((item, index) => {
+            if (item.access)
+                setAccessList(prev => [...prev, item]);
+            })
         }
 
         contract && Func();

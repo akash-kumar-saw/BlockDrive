@@ -42,7 +42,13 @@ const share = ({state, refresh}) => {
     }
 
     const selectNFT = (nft) => {
-        setSelectedNft(nft);
+        const {address}=state;
+        
+        if (nft.owner.toUpperCase() == address.toUpperCase()) {
+            setSelectedNft(nft);
+        } else {
+            setUserMessage("You are not the Owner of the Token")
+        }
     }
     
     const shareNFT = () => {
@@ -69,9 +75,12 @@ const share = ({state, refresh}) => {
         const {contract}=state;
     
         const Func = async()=>{
-          const content = await contract.getSharedList();
-          setShareList(content);
-          console.log(content)
+            const content = await contract.getSharedList();
+            
+            content.map((item, index) => {
+                if (item.access)
+                    setShareList(prev => [...prev, item]);
+            })
         }
 
         contract && Func();
