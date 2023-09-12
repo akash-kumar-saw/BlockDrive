@@ -124,7 +124,7 @@ const access = ({state}) => {
                     {nftMetaData.map((nft, index) => (
                         <div className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
                             <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
-                            <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`}>
+                            <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} target="_blank">
                                 <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
                             </a>
                             <h3 className="font-bold">{nft.caption}</h3>

@@ -30,7 +30,7 @@ const home = ({state, refresh}) => {
                         <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} target="_blank">
                             <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
                         </a>
-                        <h3 className="font-bold">{nft.caption}</h3>
+                        <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.caption}</h3>
                     </div>
                 ))}
             </div>
