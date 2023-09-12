@@ -53,21 +53,58 @@ contract DriveContract is ERC721, Ownable {
     }
 
     function allowAccess(address user) external {
-        accessMap[msg.sender].push(Access(user, true));
+        bool userFound = false;
+        uint accessLength = accessMap[msg.sender].length;
+
+        for (uint i = 0; i < accessLength; i++) {
+            if (accessMap[msg.sender][i].user == user) {
+                accessMap[msg.sender][i].access = true;
+                userFound = true;
+                break;
+            }
+        }
+        if (!userFound) {
+            accessMap[msg.sender].push(Access(user, true));
+        }
     }
 
-    function disallowAccess(address user) external {
+function disallowAccess(address user) external {
+    bool userFound = false;
+    uint accessLength = accessMap[msg.sender].length;
+
+    for (uint i = 0; i < accessLength; i++) {
+        if (accessMap[msg.sender][i].user == user) {
+            accessMap[msg.sender][i].access = false;
+            userFound = true;
+            break;
+        }
+    }
+    if (!userFound) {
         accessMap[msg.sender].push(Access(user, false));
     }
+}
 
-    function shareAccess(address to, uint256 tokenId) external {
-        require(ownerOf(tokenId) == msg.sender, "You are not the owner of this token");
+function shareAccess(address to, uint256 tokenId) external {
+    require(ownerOf(tokenId) == msg.sender, "You are not the owner of this token");
+    approve(to, tokenId);
 
-        approve(to, tokenId);
-
-        addressToMetaData[to].push(tokenIdToMetadata[tokenId]);
+    bool userFound = false;
+    uint sharedLength = sharedMap[msg.sender].length;
+    
+    for (uint i = 0; i < sharedLength; i++) {
+        if (sharedMap[msg.sender][i].user == to) {
+            sharedMap[msg.sender][i].access = true;
+            userFound = true;
+            break;
+        }
+    }
+    if (!userFound) {
         sharedMap[msg.sender].push(Access(to, true));
     }
+
+    addressToMetaData[to].push(tokenIdToMetadata[tokenId]);
+}
+
 
     function getAccessList() external view returns (Access[] memory) {
         return accessMap[msg.sender];
