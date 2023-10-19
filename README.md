@@ -36,3 +36,13 @@ npm start
 - React + Vite: Web interface and user interactions.
 - TailwindCSS: Utility-first CSS framework. 
 - Ether.js: JavaScript library for Ethereum interactions.
+
+## Contributing
+
+I welcome contributions and feedback! If you'd like to contribute to this portfolio or suggest improvements, please follow these steps:
+
+1. Fork and clone the repository
+2. Create a new branch: `git checkout -b YourGithubId/YourFeatureName`
+3. Make your changes and commit them: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin YourGithubId/YourFeatureName`
+5. Create a pull request
