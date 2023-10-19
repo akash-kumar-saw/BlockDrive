@@ -9,7 +9,7 @@ BlockDrive is a decentralized image hosting platform built on the Ethereum block
 - **NFT Image Hosting:** Upload images as unique NFTs on the Ethereum blockchain.
 - **Access:** Give access to all images by giving permission to other Ethereum addresses.
 - **Sharing:** Give access to specific images by sharing ownership with other Ethereum addresses.
-- **Web Interface:** A user-friendly web interface powered by JavaScript React for easy interactions.
+- **Web Interface:** A user-friendly web interface powered by JavaScript React + ViteJS for easy interactions.
 - **Secure and Transparent:** Leverage the security and transparency of the Ethereum blockchain for image ownership and access control.
 
 ## Run Locally
@@ -28,21 +28,21 @@ npm start
 ```
 
 ## Technologies Used
-- Ethereum: Decentralized blockchain with smart contract functionality.
-- Solidity: Ethereum smart contract language.
-- Hardhat: Ethereum development environment.
-- IPFS: Decentralized file storage for images.
-- JavaScript: Backend and frontend development.
-- React + Vite: Web interface and user interactions.
-- TailwindCSS: Utility-first CSS framework. 
-- Ether.js: JavaScript library for Ethereum interactions.
+- **Ethereum**: Decentralized blockchain with smart contract functionality.
+- **Solidity**: Ethereum smart contract language.
+- **Hardhat**: Ethereum development environment.
+- **IPFS**: Decentralized file storage for images.
+- **JavaScript**: Backend and frontend development.
+- **React + Vite**: Web interface and user interactions.
+- **TailwindCSS**: Utility-first CSS framework. 
+- **Ether.js**: JavaScript library for Ethereum interactions.
 
 ## Contributing
 
 I welcome contributions and feedback! If you'd like to contribute to this portfolio or suggest improvements, please follow these steps:
 
-1. Fork and clone the repository
-2. Create a new branch: `git checkout -b YourGithubId/YourFeatureName`
-3. Make your changes and commit them: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin YourGithubId/YourFeatureName`
-5. Create a pull request
+1. Explore: Go through the repository.
+2. Issues: Check existing issues or create new ones.
+3. Assignment: Wait for the issue to be assigned to you.
+4. Fork & Branch: Fork the repo and create a new branch for your issue.
+5. Pull Request: Create a pull request which will be reviewed and improved.
