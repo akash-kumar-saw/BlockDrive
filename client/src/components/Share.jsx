@@ -6,6 +6,7 @@ import Notification from "../layouts/Notification"
 const share = ({state, refresh}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
+    const [defaultMetaData, setDefaultMetaData] = useState([]);
     const [shareList, setShareList] = useState([]);
     const [isListview, setListview] = useState(false);
     const [selectedNft, setSelectedNft] = useState(null);
@@ -18,6 +19,7 @@ const share = ({state, refresh}) => {
         const Func = async()=>{
           const content = await contract.getNFT(address);
           setNftMetaData(content);
+          setDefaultMetaData(content);
           console.log(content)
         }
 
@@ -89,6 +91,19 @@ const share = ({state, refresh}) => {
         openListview();
     }
 
+    const displaySearch = () => {
+        const searchText = document.getElementById("searchInput").value;
+
+        if (searchText.trim() === "" || nftMetaData.length == 0) {
+            setNftMetaData(defaultMetaData);
+        } else {         
+            const filteredData = nftMetaData.filter((nft) =>
+              nft.caption.toLowerCase().includes(searchText.toLowerCase())
+            );
+            setNftMetaData(filteredData);
+        }
+    }
+
     return (
         <>
         <div className="flex flex-col bg-gray-200 h-screen w-screen items-center">
@@ -102,6 +117,9 @@ const share = ({state, refresh}) => {
                     <button onClick={shareNFT} className="bg-green-500 hover:bg-green-600 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
                 </div>
                 }
+                <div className="flex flex-col  justify-center p-2 w-full shadow-md shadow-black">
+                    <input onChange={displaySearch} id="searchInput" className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Search" /> 
+                </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
                         <div onClick={() => selectNFT(nft)} className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
