@@ -140,6 +140,16 @@
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "fileType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fileName",
+				"type": "string"
+			},
+			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -283,6 +293,16 @@
 						"type": "string"
 					},
 					{
+						"internalType": "string",
+						"name": "fileType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "fileName",
+						"type": "string"
+					},
+					{
 						"internalType": "address",
 						"name": "owner",
 						"type": "address"
@@ -355,6 +375,16 @@
 			{
 				"internalType": "string",
 				"name": "caption",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fileType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fileName",
 				"type": "string"
 			}
 		],

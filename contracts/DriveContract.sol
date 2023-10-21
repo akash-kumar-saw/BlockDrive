@@ -11,6 +11,8 @@ contract DriveContract is ERC721, Ownable {
         uint tokenId;
         string ipfsHash;
         string caption;
+        string fileType;
+        string fileName;
         address owner;
     }
 
@@ -28,13 +30,13 @@ contract DriveContract is ERC721, Ownable {
 
     constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
 
-    function mintNFT(string memory ipfsHash, string memory caption) external {
+    function mintNFT(string memory ipfsHash, string memory caption, string memory fileType, string memory fileName) external {
         tokenIdCounter++;
         uint256 tokenId = tokenIdCounter;
 
         _mint(msg.sender, tokenId);
-        tokenIdToMetadata[tokenId] = NFTMetadata(tokenId, ipfsHash, caption, msg.sender);
-        addressToMetaData[msg.sender].push(NFTMetadata(tokenId, ipfsHash, caption, msg.sender));
+        tokenIdToMetadata[tokenId] = NFTMetadata(tokenId, ipfsHash, caption, fileType, fileName, msg.sender);
+        addressToMetaData[msg.sender].push(NFTMetadata(tokenId, ipfsHash, caption, fileType, fileName, msg.sender));
     }  
 
     function getNFT(address user) external view returns (NFTMetadata[] memory) {

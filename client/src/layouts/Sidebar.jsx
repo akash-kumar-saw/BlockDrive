@@ -19,6 +19,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
     const [isLoadbar, setLoadbar] = useState(false);
     const [userMessage, setUserMessage] = useState(null);
     const [navigation, setNavigation] = useState("");
+    const [fileType, setFileType] = useState("");
 
     const openDialog = () => {
         setDialogOpen(true);
@@ -42,9 +43,24 @@ const sidebar = ({state, saveState, refreshPage}) => {
     const retrieveFile = (e) => {
         const data = e.target.files[0];
         const reader = new window.FileReader();
+
+        if (!data) {
+            setFile(null);
+            setFileName("");
+            return;
+        }
+
         reader.readAsArrayBuffer(data);
         reader.onloadend = () => {
-          setFile(e.target.files[0]);
+            setFile(e.target.files[0]);
+
+            const extension = e.target.files[0].name.split(".").pop().toLowerCase();
+
+            if (["jpg", "jpeg", "png", "gif"].includes(extension)) {
+            setFileType("image");
+            } else {
+            setFileType("document");
+            }
         };
         setFileName(e.target.files[0].name);
         e.preventDefault();
@@ -52,7 +68,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
 
     const connectWallet =async()=>{
         try{
-            const contractAddress = "0x7A78dcead67CF208D4A8a6E8137A9CE1bAe515e3";
+            const contractAddress = "0xF57edDe26C34fF4c220C3Aa5d7f891A7Ab41E914";
             if (window.ethereum) {
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 const signer = provider.getSigner();
@@ -103,9 +119,9 @@ const sidebar = ({state, saveState, refreshPage}) => {
       
                 if (response.status === 200) {
                     const { IpfsHash } = response.data;
-
+                    console.log(IpfsHash);
                     const {contract} = state;
-                    await contract.mintNFT(IpfsHash, caption);
+                    await contract.mintNFT(IpfsHash, caption, fileType, fileName);
                     setUserMessage("NFT Minted Successfully!");
                 } else {
                     setUserMessage("Failed to upload to IPFS : ", response.data);
@@ -114,6 +130,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
                 closeLoadbar();
             }catch (error) {
                 setUserMessage("Error uploading image to IPFS :", error);
+                closeLoadbar();
             }
         }
     };
@@ -126,7 +143,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
                 <h2 className="text-2xl text-blue-500 font-bold text-center ml-2">BlockDrive</h2>
             </div>
             <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-green-500 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
-            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Add Image</button>
+            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Add File</button>
             <button onClick={()=>{refreshPage()}} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Refresh</button>
             <button onClick={()=>{navigate('/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>My Drive</button>
             <button onClick={()=>{navigate('/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Access Manager</button>
@@ -136,8 +153,8 @@ const sidebar = ({state, saveState, refreshPage}) => {
         {isDialogOpen && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-900 bg-opacity-50">
             <div className="flex flex-col justify-center items-center bg-white p-4 rounded-lg shadow-lg shadow-black">
-                <h3 className="text-xl font-bold m-2">Add Image</h3>
-                <input type="file" accept="image/*" onChange={retrieveFile} className="font-semibold" />
+                <h3 className="text-xl font-bold m-2">Add File</h3>
+                <input type="file" onChange={retrieveFile} className="font-semibold" />
                 {file && (
                 <div>
                     <img src={URL.createObjectURL(file)} alt={fileName} className="m-2 max-h-32" />
