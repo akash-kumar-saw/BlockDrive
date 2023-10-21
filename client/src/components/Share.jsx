@@ -3,6 +3,8 @@ import Loadbar from "../layouts/Loadbar"
 import Listview from "../layouts/Listview"
 import Notification from "../layouts/Notification"
 
+import document from "../assets/document.png"
+
 const share = ({state, refresh}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
@@ -122,13 +124,19 @@ const share = ({state, refresh}) => {
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div onClick={() => selectNFT(nft)} className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
+                        <div onClick={() => selectNFT(nft)} className="p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
                             <div className="flex justify-end">
                                 <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
                                 <input type="radio" name="selectedNFT" checked={selectedNft === nft} onChange={() => selectNFT(nft)} />
                             </div>
-                            <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
-                            <h3 className="font-bold">{nft.caption}</h3>
+                            { nft.fileType === "image" ? (
+                                <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
+                            ) : (
+                                <img src={document} className="border-2 border-black w-full h-auto"></img>
+                            )
+                            }
+                            <h3 className="font-semibold">{nft.caption}</h3>
+                            <h3 className="font-semibold">{nft.fileName}</h3>
                         </div>
                     ))}
                 </div>
