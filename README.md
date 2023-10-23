@@ -1,4 +1,4 @@
-# BlockDrive - NFT-Based Image Hosting & Sharing on Ethereum
+# BlockDrive - NFT-Based Files Hosting & Sharing on Ethereum
 
 BlockDrive is a decentralized File hosting platform built on the Ethereum blockchain. It allows users to upload Files in IPFS as Non-Fungible Tokens (NFTs) and share access with other Ethereum addresses. The Ethereum smart contract is deployed on the **Sepolia** testnet. BlockDrive also provides a web interface for easy and intuitive interactions with the platform.
 
