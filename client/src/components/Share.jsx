@@ -93,8 +93,8 @@ const share = ({state, refresh}) => {
         openListview();
     }
 
-    const displaySearch = () => {
-        const searchText = document.getElementById("searchInput").value;
+    const displaySearch = (e) => {
+        const searchText = e.target.value;
 
         if (searchText.trim() === "" || nftMetaData.length == 0) {
             setNftMetaData(defaultMetaData);

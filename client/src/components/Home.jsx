@@ -21,9 +21,8 @@ const home = ({state, refresh}) => {
         
     },[state, refresh])
 
-    const displaySearch = () => {
-        const searchText = document.getElementById("searchInput").value;
-
+    const displaySearch = (e) => {
+        const searchText = e.target.value;
         if (searchText.trim() === "" || nftMetaData.length == 0) {
             setNftMetaData(defaultMetaData);
         } else {         
