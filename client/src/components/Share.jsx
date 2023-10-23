@@ -108,15 +108,16 @@ const share = ({state, refresh}) => {
 
     return (
         <>
-        <div className="flex flex-col bg-gray-200 h-screen w-screen items-center">
-            <div className="p-5 w-full ">
-                <h2 className="text-2xl  text-black font-bold text-center">Share NFT/Image</h2>
+        <div className="flex flex-col bg-gray-600 h-screen w-screen items-center">
+            <div className="p-5 w-full flex justify-between">
+                <h2 className="text-2xl  text-white font-bold text-center">Share NFT/Image</h2>
+                <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
             </div>
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-full w-full">
                 {
                     selectedNft && <div className="flex items-center justify-center px-5 w-full h-[100px] shadow-md shadow-black">
                     <input id="addressTo" className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
-                    <button onClick={shareNFT} className="bg-green-500 hover:bg-green-600 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
+                    <button onClick={shareNFT} className="bg-blue-400 hover:bg-blue-500 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
                 </div>
                 }
                 <div className="flex flex-col  justify-center p-2 w-full shadow-md shadow-black">
@@ -140,7 +141,7 @@ const share = ({state, refresh}) => {
                         </div>
                     ))}
                 </div>
-                <button onClick={getShareList} className="h-[100px] bg-green-500 hover:bg-green-600 shadow-inner font-bold shadow-black" >Get Share List</button>
+                <button onClick={getShareList} className="h-[100px] bg-blue-400 hover:bg-blue-500 shadow-inner font-bold shadow-black" >Get Share List</button>
             </div>
         </div>
 

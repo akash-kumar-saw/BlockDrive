@@ -78,6 +78,7 @@ const sidebar = ({state, saveState, refreshPage}) => {
 
                 setConnected(true);
                 setNavigation("Home");
+                navigate("/");
                 setAccountAddress(accounts[0]);
                 saveState({web3:provider,contract:contract,address:accounts[0]});
 
@@ -137,17 +138,17 @@ const sidebar = ({state, saveState, refreshPage}) => {
     
     return (
         <>
-        <div className="flex flex-col h-screen w-[200px] items-center bg-gray-200">
+        <div className="flex flex-col h-screen w-[200px] items-center bg-gray-600">
             <div className="flex p-5">
                 <img src={bloackchain} className="w-[40px] h-[40px]" />
-                <h2 className="text-2xl text-blue-500 font-bold text-center ml-2">BlockDrive</h2>
+                <h2 className="text-2xl text-white font-bold text-center ml-2">BlockDrive</h2>
             </div>
-            <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-green-500 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
-            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Add File</button>
-            <button onClick={()=>{refreshPage()}} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-300' : 'hover:bg-gray-400'} `}>Refresh</button>
-            <button onClick={()=>{navigate('/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>My Drive</button>
-            <button onClick={()=>{navigate('/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Access Manager</button>
-            <button onClick={()=>{navigate('/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-300' : 'bg-none'} focus:bg-blue-300 hover:bg-gray-400`}>Share NFT/Image</button>
+            <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-blue-400 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
+            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-400' : 'hover:bg-gray-600'} `}>Add File</button>
+            <button onClick={()=>{refreshPage()}} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-400' : 'hover:bg-gray-600'} `}>Refresh</button>
+            <button onClick={()=>{navigate('/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>My Drive</button>
+            <button onClick={()=>{navigate('/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>Access Manager</button>
+            <button onClick={()=>{navigate('/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>Share NFT/Image</button>
         </div>
 
         {isDialogOpen && (

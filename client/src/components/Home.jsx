@@ -36,9 +36,10 @@ const home = ({state, refresh}) => {
     
     return (
         <>
-        <div className="flex flex-col bg-gray-200 h-screen w-screen items-center">
-            <div className="p-5 w-full ">
-                <h2 className="text-2xl text-black font-bold text-center">My Drive</h2>
+        <div className="flex flex-col bg-gray-600 h-screen w-screen items-center">
+            <div className="p-5 w-full flex justify-between">
+                <h2 className="text-2xl text-white font-bold text-center">My Drive</h2>
+                <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
             </div>
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
                 <div className="flex flex-col  justify-center p-5 w-full shadow-md shadow-black">
