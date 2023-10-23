@@ -28,11 +28,14 @@ const App = () => {
     <Router>
       <div className="flex bg-gray-200">  
         <Sidebar saveState={saveState} state={state} refreshPage={refreshPage}/>
-        <Routes>
-          <Route exact path="/" element={<Home state={state} refresh={refresh}/>}/>
-          <Route exact path="/Access" element={<Access state={state}/>}/>
-          <Route exact path="/Share" element={<Share state={state} refresh={refresh}/>}/>
-        </Routes>
+
+        { (state.address!=null) && 
+          <Routes>
+            <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh}/>}/>
+            <Route exact path="/BlockDrive/Access" element={<Access state={state}/>}/>
+            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh}/>}/>
+          </Routes>
+        }
 
         { (state.address==null) && 
           <div className="flex flex-col bg-gray-600 h-screen w-screen items-center " >
