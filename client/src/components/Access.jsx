@@ -115,7 +115,7 @@ const access = ({state}) => {
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
                 <div className="flex flex-col  justify-center px-5 w-full h-[200px] shadow-md shadow-black">
                     <div className="flex items-center justify-center">
-                        <input id="viewImage" className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
+                        <input id="viewImage" className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
                         <button onClick={allowAccess} className="bg-blue-400 hover:bg-blue-500 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Allow</button>
                         <button onClick={disallowAccess} className="bg-red-500 hover:bg-red-600 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Disallow</button>
                     </div>

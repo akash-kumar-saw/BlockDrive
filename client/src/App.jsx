@@ -5,6 +5,7 @@ import Sidebar from './layouts/Sidebar'
 import Home from './components/Home'
 import Access from './components/Access'
 import Share from './components/Share'
+import Refresh from './layouts/Refresh'
 
 const App = () => {
 
@@ -27,14 +28,17 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-gray-200">  
-        <Sidebar saveState={saveState} state={state} refreshPage={refreshPage}/>
+        <Sidebar saveState={saveState} state={state}/>
 
         { (state.address!=null) && 
+          <>
           <Routes>
             <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh}/>}/>
             <Route exact path="/BlockDrive/Access" element={<Access state={state}/>}/>
             <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh}/>}/>
           </Routes>
+          <Refresh refreshPage={refreshPage} />
+          </>
         }
 
         { (state.address==null) && 
@@ -48,6 +52,8 @@ const App = () => {
             </div>
           </div>
         }
+
+        
       </div>
     </Router>
   )

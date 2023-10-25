@@ -42,7 +42,7 @@ const home = ({state, refresh}) => {
             </div>
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
                 <div className="flex flex-col  justify-center p-5 w-full shadow-md shadow-black">
-                        <input onChange={displaySearch} id="searchInput" className="border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Search" />
+                        <input onChange={displaySearch} id="searchInput" className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Search" />
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
@@ -56,8 +56,8 @@ const home = ({state, refresh}) => {
                                 )
                                 }
                             </a>
-                            <h3 className="font-semibold">{nft.caption}</h3>
-                            <h3 className="font-semibold">{nft.fileName}</h3>
+                            <h3 className="font-semibold">{`Caption : ${nft.caption}`}</h3>
+                            <h3 className="font-bold">{nft.fileName}</h3>
                         </div>
                     ))}
                 </div>
