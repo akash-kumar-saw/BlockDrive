@@ -27,7 +27,8 @@ const home = ({state, refresh}) => {
             setNftMetaData(defaultMetaData);
         } else {         
             const filteredData = nftMetaData.filter((nft) =>
-              nft.caption.toLowerCase().includes(searchText.toLowerCase())
+              nft.caption.toLowerCase().includes(searchText.toLowerCase()) || 
+              nft.fileName.toLowerCase().includes(searchText.toLowerCase())
             );
             setNftMetaData(filteredData);
         }

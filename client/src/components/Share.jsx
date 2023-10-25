@@ -100,7 +100,8 @@ const share = ({state, refresh}) => {
             setNftMetaData(defaultMetaData);
         } else {         
             const filteredData = nftMetaData.filter((nft) =>
-              nft.caption.toLowerCase().includes(searchText.toLowerCase())
+              nft.caption.toLowerCase().includes(searchText.toLowerCase()) || 
+              nft.fileName.toLowerCase().includes(searchText.toLowerCase())
             );
             setNftMetaData(filteredData);
         }
@@ -110,7 +111,7 @@ const share = ({state, refresh}) => {
         <>
         <div className="flex flex-col bg-gray-600 h-screen w-screen items-center overflow-y-auto">
             <div className="p-5 w-full flex justify-between">
-                <h2 className="text-2xl  text-white font-bold text-center">Share NFT/Image</h2>
+                <h2 className="text-2xl  text-white font-bold text-center">Share NFT/File</h2>
                 <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
             </div>
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-full w-full">
@@ -136,8 +137,8 @@ const share = ({state, refresh}) => {
                                 <img src={document} className="border-2 border-black w-full h-auto"></img>
                             )
                             }
-                            <h3 className="font-semibold">{nft.caption}</h3>
-                            <h3 className="font-semibold">{nft.fileName}</h3>
+                            <h3 className="font-semibold">{`Caption : ${nft.caption}`}</h3>
+                            <h3 className="font-bold">{nft.fileName}</h3>
                         </div>
                     ))}
                 </div>

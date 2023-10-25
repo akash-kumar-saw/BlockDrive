@@ -119,7 +119,7 @@ const access = ({state}) => {
                         <button onClick={allowAccess} className="bg-blue-400 hover:bg-blue-500 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Allow</button>
                         <button onClick={disallowAccess} className="bg-red-500 hover:bg-red-600 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Disallow</button>
                     </div>
-                    <button onClick={viewImage} className="bg-blue-400 hover:bg-blue-500 mt-2 font-bold h-[50px] rounded-lg shadow-lg shadow-black w-full">View Image</button>
+                    <button onClick={viewImage} className="bg-blue-400 hover:bg-blue-500 mt-2 font-bold h-[50px] rounded-lg shadow-lg shadow-black w-full">View Files</button>
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
