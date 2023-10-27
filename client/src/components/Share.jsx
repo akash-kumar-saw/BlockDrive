@@ -20,12 +20,17 @@ const share = ({state, refresh, setDisplayRefresh}) => {
         const {contract, address}=state;
     
         const Func = async()=>{
-          const content = await contract.getNFT(address);
-          setNftMetaData(content);
-          setDefaultMetaData(content);
-          console.log(content)
+            try {
+                openLoadbar();
+                const content = await contract.getNFT(address);
+                setNftMetaData(content);
+                setDefaultMetaData(content);
+                closeLoadbar();
+            } catch (error) {
+                closeLoadbar();
+            }
+            
         }
-
         contract && Func();
         
     },[state, refresh])

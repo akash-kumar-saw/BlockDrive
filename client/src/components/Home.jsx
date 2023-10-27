@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Loadbar from "../layouts/Loadbar";
 
 import document from "../assets/document.png"
 
@@ -6,17 +7,31 @@ const home = ({state, refresh}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [defaultMetaData, setDefaultMetaData] = useState([]);
+    const [isLoadbar, setLoadbar] = useState(false);
+
+    const openLoadbar = () => {
+        setLoadbar(true);
+    }
+
+    const closeLoadbar = () => {
+        setLoadbar(false);
+    }
 
     useEffect(()=>{
         const {contract, address}=state;
     
         const Func = async()=>{
-          const content = await contract.getNFT(address);
-          setNftMetaData(content);
-          setDefaultMetaData(content);
-          console.log(content)
+            try {
+                openLoadbar();
+                const content = await contract.getNFT(address);
+                setNftMetaData(content);
+                setDefaultMetaData(content);
+                closeLoadbar();
+            } catch (error) {
+                closeLoadbar();
+            }
+          
         }
-
         contract && Func();
         
     },[state, refresh])
@@ -64,6 +79,10 @@ const home = ({state, refresh}) => {
                 </div>
             </div>
         </div>
+
+        {
+            isLoadbar && (<Loadbar />)
+        }
         </>
     )
 }
