@@ -16,6 +16,8 @@ const App = () => {
   })
 
   const [refresh, setRefresh] = useState(0);
+  const [displayRefresh, setDisplayRefresh] = useState(true);
+  const [accessAddress, setAccessAddress] = useState("");
 
   const refreshPage = () => {
     setRefresh(refresh+1);
@@ -28,16 +30,16 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-gray-200">  
-        <Sidebar saveState={saveState} state={state}/>
+        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh}/>
 
         { (state.address!=null) && 
           <>
           <Routes>
             <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh}/>}/>
-            <Route exact path="/BlockDrive/Access" element={<Access state={state}/>}/>
-            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh}/>}/>
+            <Route exact path="/BlockDrive/Access" element={<Access state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} accessAddress={accessAddress} setAccessAddress={setAccessAddress}/>}/>
+            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh}/>}/>
           </Routes>
-          <Refresh refreshPage={refreshPage} />
+          <Refresh refreshPage={refreshPage} displayRefresh={displayRefresh} />
           </>
         }
 

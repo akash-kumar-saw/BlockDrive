@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ethers } from 'ethers';
@@ -8,7 +8,7 @@ import Notification from "./Notification"
 
 import bloackchain from '../assets/blockchain.png';
 
-const sidebar = ({state, saveState}) => {
+const sidebar = ({state, saveState, setDisplayRefresh}) => {
     const navigate = useNavigate();
 
     const [connected,setConnected]=useState(false);
@@ -39,6 +39,14 @@ const sidebar = ({state, saveState}) => {
     const closeLoadbar = () => {
         setLoadbar(false);
     }
+
+    useEffect(() => {
+        if (isDialogOpen) {
+            setDisplayRefresh(false);
+        } else {
+            setDisplayRefresh(true);
+        }
+    },[isDialogOpen])
 
     const retrieveFile = (e) => {
         const data = e.target.files[0];
@@ -145,9 +153,9 @@ const sidebar = ({state, saveState}) => {
             </div>
             <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-blue-400 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
             <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-400' : 'hover:bg-gray-600'} `}>Add NFT/File</button>
-            <button onClick={()=>{navigate('/BlockDrive/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>My Drive</button>
-            <button onClick={()=>{navigate('/BlockDrive/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>Access Manager</button>
-            <button onClick={()=>{navigate('/BlockDrive/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none'} hover:bg-gray-400`}>Share NFT/File</button>
+            <button onClick={()=>{navigate('/BlockDrive/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none hover:bg-gray-400'} `}>My Drive</button>
+            <button onClick={()=>{navigate('/BlockDrive/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none hover:bg-gray-400'}`}>Access Manager</button>
+            <button onClick={()=>{navigate('/BlockDrive/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-none hover:bg-gray-400'}`}>Share NFT/File</button>
         </div>
 
         {isDialogOpen && (

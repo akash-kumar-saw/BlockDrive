@@ -5,7 +5,7 @@ import Notification from "../layouts/Notification"
 
 import document from "../assets/document.png"
 
-const share = ({state, refresh}) => {
+const share = ({state, refresh, setDisplayRefresh}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [defaultMetaData, setDefaultMetaData] = useState([]);
@@ -14,6 +14,7 @@ const share = ({state, refresh}) => {
     const [selectedNft, setSelectedNft] = useState(null);
     const [isLoadbar, setLoadbar] = useState(false);
     const [userMessage, setUserMessage] = useState(null);
+    const [addressTo, setAddressTo] = useState("");
 
     useEffect(()=>{
         const {contract, address}=state;
@@ -28,6 +29,14 @@ const share = ({state, refresh}) => {
         contract && Func();
         
     },[state, refresh])
+
+    useEffect(() => {
+        if (isListview) {
+            setDisplayRefresh(false);
+        } else {
+            setDisplayRefresh(true);
+        }
+    },[isListview])
 
     const openListview = () => {
         setListview(true);
@@ -56,18 +65,22 @@ const share = ({state, refresh}) => {
     }
     
     const shareNFT = () => {
-        const addressTo = document.getElementById("addressTo").value;
-
         if (addressTo!="") {
-            openLoadbar();
             const {contract}=state;
+
             const Func = async()=>{
-                console.log(selectedNft.tokenId.toNumber())
-                await contract.shareAccess(addressTo, selectedNft.tokenId.toNumber());
-                setUserMessage("NFT/Image Shared Successfully!")
+                try {
+                    openLoadbar();
+                    await contract.shareAccess(addressTo, selectedNft.tokenId.toNumber());
+                    setUserMessage("NFT/Image Shared Successfully!")
+                    closeLoadbar();
+                } catch (error) {
+                    closeLoadbar();
+                }
+                
             }
             contract && Func();
-            closeLoadbar();
+            
         }
         else {
             setUserMessage("Please provide a Etherium Address")
@@ -80,6 +93,8 @@ const share = ({state, refresh}) => {
     
         const Func = async()=>{
             const content = await contract.getSharedList();
+
+            setShareList([]);
             
             content.map((item, index) => {
                 if (item.access)
@@ -117,7 +132,7 @@ const share = ({state, refresh}) => {
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-full w-full">
                 {
                     selectedNft && <div className="flex items-center justify-center px-5 w-full h-[100px] shadow-md shadow-black">
-                    <input id="addressTo" className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
+                    <input value={addressTo} onChange={(e) => setAddressTo(e.target.value)} className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
                     <button onClick={shareNFT} className="bg-blue-400 hover:bg-blue-500 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Share</button>
                 </div>
                 }

@@ -1,15 +1,18 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Loadbar from "../layouts/Loadbar"
 import Notification from "../layouts/Notification"
 import Listview from "../layouts/Listview"
 
-const access = ({state}) => {
+import document from "../assets/document.png"
+
+const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddress}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [accessList, setAccessList] = useState([]);
     const [isListview, setListview] = useState(false);
     const [isLoadbar, setLoadbar] = useState(false);
     const [userMessage, setUserMessage] = useState(null);
+    const [addressTo, setAddressTo] = useState("");
 
     const openListview = () => {
         setListview(true);
@@ -27,12 +30,43 @@ const access = ({state}) => {
         setLoadbar(false);
     }
 
+    useEffect(() => {
+        if (isListview) {
+            setDisplayRefresh(false);
+        } else {
+            setDisplayRefresh(true);
+        }
+    },[isListview])
+
+    useEffect(()=>{
+        if (accessAddress!="") {
+
+            setAddressTo(accessAddress);
+            const {contract}=state;
+
+            const Func = async()=>{
+                try {
+                    openLoadbar();
+                    const content = await contract.getNFT(accessAddress);
+                    setNftMetaData(content);
+                    closeLoadbar();
+                } catch (error) {
+                    closeLoadbar();
+                }
+                
+            }
+            contract && Func();
+        }
+    },[refresh])
+
     const getAccessList = () => {
         openLoadbar();
         const {contract}=state;
     
         const Func = async()=>{
             const content = await contract.getAccessList();
+
+            setAccessList([]);
             
             content.map((item, index) => {
             if (item.access)
@@ -47,18 +81,24 @@ const access = ({state}) => {
     }
 
     const viewImage = () => {
-        const address = document.getElementById("viewImage").value;
     
-        if (address!="") {
-            openLoadbar();
+        if (addressTo!="") {
+            setAccessAddress(addressTo);
             const {contract}=state;
 
             const Func = async()=>{
-            const content = await contract.getNFT(address);
-            setNftMetaData(content);
+                try {
+                    openLoadbar();
+                    const content = await contract.getNFT(addressTo);
+                    setNftMetaData(content);
+                    closeLoadbar();
+                } catch (error) {
+                    closeLoadbar();
+                }
+                
             }
             contract && Func();
-            closeLoadbar();
+            
         }
         else {
             setUserMessage("Please provide a Etherium Address");
@@ -66,18 +106,23 @@ const access = ({state}) => {
     }
 
     const allowAccess = () => {
-        const address = document.getElementById("viewImage").value;
     
-        if (address!="") {
-            openLoadbar();
+        if (addressTo!="") {
             const {contract}=state;
 
             const Func = async()=>{
-            await contract.allowAccess(address);
-            setUserMessage("Access Allowed Successfully!");
+                try {
+                    openLoadbar();
+                    await contract.allowAccess(addressTo);
+                    setUserMessage("Access Allowed Successfully!");
+                    closeLoadbar();
+                } catch (error) {
+                    closeLoadbar();
+                }
+                
             }
             contract && Func(); 
-            closeLoadbar();
+            
         }
         else {
             setUserMessage("Please provide a Etherium Address");
@@ -85,18 +130,24 @@ const access = ({state}) => {
     }
 
     const disallowAccess = () => {        
-        const address = document.getElementById("viewImage").value;
-    
-        if (address!="") {
-            openLoadbar();
+
+        if (addressTo!="") {
+            
             const {contract}=state;
 
             const Func = async()=>{
-            await contract.disallowAccess(address);
-            setUserMessage("Access Disallowed Successfully!");
+                try {
+                    openLoadbar();
+                    await contract.disallowAccess(addressTo);
+                    setUserMessage("Access Disallowed Successfully!");
+                    closeLoadbar();
+                } catch (error) {
+                    closeLoadbar();
+                }
+
             }
             contract && Func(); 
-            closeLoadbar();
+            
         }
         else {
             setUserMessage("Please provide a Etherium Address");
@@ -115,7 +166,7 @@ const access = ({state}) => {
             <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
                 <div className="flex flex-col  justify-center px-5 w-full h-[200px] shadow-md shadow-black">
                     <div className="flex items-center justify-center">
-                        <input id="viewImage" className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
+                        <input value={addressTo} onChange={(e)=>{setAddressTo(e.target.value)}} className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
                         <button onClick={allowAccess} className="bg-blue-400 hover:bg-blue-500 mx-5 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Allow</button>
                         <button onClick={disallowAccess} className="bg-red-500 hover:bg-red-600 font-bold h-[50px] w-[100px] rounded-2xl shadow-lg shadow-black">Disallow</button>
                     </div>
@@ -123,12 +174,18 @@ const access = ({state}) => {
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div className="p-2 m-2 rounded-xl text-center w-[150px] h-[200px] border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
+                        <div className="p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
                             <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
                             <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} target="_blank">
-                                <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
+                                { nft.fileType === "image" ? (
+                                    <img src={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} className="border-2 border-black w-full h-3/4"></img>
+                                ) : (
+                                    <img src={document} className="border-2 border-black w-full h-auto"></img>
+                                )
+                                }
                             </a>
-                            <h3 className="font-bold">{nft.caption}</h3>
+                            <h3 className="font-semibold">{`Caption : ${nft.caption}`}</h3>
+                            <h3 className="font-bold">{nft.fileName}</h3>
                         </div>
                     ))}
                 </div>
