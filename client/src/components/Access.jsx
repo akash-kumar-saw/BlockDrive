@@ -60,23 +60,30 @@ const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddr
     },[refresh])
 
     const getAccessList = () => {
-        openLoadbar();
+        
         const {contract}=state;
     
         const Func = async()=>{
-            const content = await contract.getAccessList();
+            try {
+                openLoadbar();
 
-            setAccessList([]);
+                const content = await contract.getAccessList();
+
+                setAccessList([]);
+                
+                content.map((item, index) => {
+                if (item.access)
+                    setAccessList(prev => [...prev, item]);
+                })
+
+                closeLoadbar();
+            } catch (error) {
+                closeLoadbar();
+            }
             
-            content.map((item, index) => {
-            if (item.access)
-                setAccessList(prev => [...prev, item]);
-            })
         }
-
         contract && Func();
 
-        closeLoadbar();
         openListview();
     }
 

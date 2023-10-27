@@ -93,23 +93,30 @@ const share = ({state, refresh, setDisplayRefresh}) => {
     }
 
     const getShareList = () => {
-        openLoadbar();
+        
         const {contract}=state;
     
         const Func = async()=>{
-            const content = await contract.getSharedList();
+            try {
+                openLoadbar();
 
-            setShareList([]);
+                const content = await contract.getSharedList();
+
+                setShareList([]);
+                
+                content.map((item, index) => {
+                    if (item.access)
+                        setShareList(prev => [...prev, item]);
+                })
+
+                closeLoadbar();
+            } catch (error) {
+                closeLoadbar();
+            }
             
-            content.map((item, index) => {
-                if (item.access)
-                    setShareList(prev => [...prev, item]);
-            })
         }
-
         contract && Func();
 
-        closeLoadbar();
         openListview();
     }
 
