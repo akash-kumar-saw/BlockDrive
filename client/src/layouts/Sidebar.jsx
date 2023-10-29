@@ -49,6 +49,7 @@ const sidebar = ({state, saveState, setDisplayRefresh}) => {
     },[isDialogOpen])
 
     const retrieveFile = (e) => {
+        e.preventDefault();
         const data = e.target.files[0];
         const reader = new window.FileReader();
 
@@ -99,7 +100,7 @@ const sidebar = ({state, saveState, setDisplayRefresh}) => {
                 setUserMessage("MetaMask Not Found");
             }
         }catch(error){
-            setUserMessage(error);
+            setUserMessage("Please Connect to MetaMask");
         }  
     }
 
