@@ -5,7 +5,7 @@ import Listview from "../layouts/Listview"
 
 import document from "../assets/document.png"
 
-const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddress}) => {
+const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddress, isDarkMode}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [accessList, setAccessList] = useState([]);
@@ -165,12 +165,12 @@ const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddr
 
     return (
         <>
-        <div className="flex flex-col bg-gray-600 h-screen w-screen items-center overflow-y-auto">
+        <div className={`flex flex-col h-screen w-screen items-center overflow-y-auto ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
             <div className="p-5 w-full flex justify-between">
                 <h2 className="text-2xl text-white font-bold text-center">Access Manager</h2>
                 <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
             </div>
-            <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
+            <div className={`flex flex-col rounded-tl-2xl border-2 border-black h-screen w-full ${isDarkMode ? 'bg-darkSecondary' : 'bg-secondary'}`}>
                 <div className="flex flex-col  justify-center px-5 w-full h-[200px] shadow-md shadow-black">
                     <div className="flex items-center justify-center">
                         <input value={addressTo} onChange={(e)=>{setAddressTo(e.target.value)}} className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
@@ -181,7 +181,7 @@ const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddr
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div className="p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
+                        <div className={`p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black ${isDarkMode ? 'hover:bg-darkSecondary' : 'hover:bg-secondary'}`}>
                             <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
                             <a href={`https://gateway.ipfs.io/ipfs/${nft.ipfsHash}`} target="_blank">
                                 { nft.fileType === "image" ? (
@@ -196,12 +196,12 @@ const access = ({state, setDisplayRefresh, refresh, accessAddress, setAccessAddr
                         </div>
                     ))}
                 </div>
-                <button onClick={getAccessList} className="h-[100px] bg-blue-400 hover:bg-blue-500 shadow-inner font-bold shadow-black" >Get Access List</button>
+                <button onClick={getAccessList} className={`text-white h-[100px] shadow-inner font-bold shadow-black ${isDarkMode ? 'bg-darkPrimary hover:bg-darkSecondary' : 'bg-primary hover:bg-secondary'}`} >Get Access List</button>
             </div>
         </div>
 
         {
-            isListview && (<Listview title="Access List" list={accessList} close={closeListview} />)
+            isListview && (<Listview title="Access List" list={accessList} close={closeListview} isDarkMode={isDarkMode} />)
         }
 
         {

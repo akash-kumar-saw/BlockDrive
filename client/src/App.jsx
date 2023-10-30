@@ -18,6 +18,7 @@ const App = () => {
   const [refresh, setRefresh] = useState(0);
   const [displayRefresh, setDisplayRefresh] = useState(true);
   const [accessAddress, setAccessAddress] = useState("");
+  const[isDarkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)'));
 
   const refreshPage = () => {
     setRefresh(refresh+1);
@@ -30,25 +31,25 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-gray-200">  
-        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh}/>
+        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} setDarkMode={setDarkMode}/>
 
         { (state.address!=null) && 
           <>
           <Routes>
-            <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh}/>}/>
-            <Route exact path="/BlockDrive/Access" element={<Access state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} accessAddress={accessAddress} setAccessAddress={setAccessAddress}/>}/>
-            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh}/>}/>
+            <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh} isDarkMode={isDarkMode}/>}/>
+            <Route exact path="/BlockDrive/Access" element={<Access state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} accessAddress={accessAddress} setAccessAddress={setAccessAddress} isDarkMode={isDarkMode}/>}/>
+            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode}/>}/>
           </Routes>
-          <Refresh refreshPage={refreshPage} displayRefresh={displayRefresh} />
+          <Refresh refreshPage={refreshPage} displayRefresh={displayRefresh}  isDarkMode={isDarkMode}/>
           </>
         }
 
         { (state.address==null) && 
-          <div className="flex flex-col bg-gray-600 h-screen w-screen items-center " >
+          <div className={`flex flex-col h-screen w-screen items-center overflow-y-auto ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
             <div className="p-5 w-full ">
               <h2 className="text-2xl text-white font-bold text-center">Made with 💖 by Akash Kumar Saw</h2>
             </div> 
-            <div className="flex flex-col items-center justify-center rounded-tl-2xl bg-white border-2 border-black h-screen w-full">
+            <div className={`flex flex-col rounded-tl-2xl items-center justify-center rounded-tl-2x border-2 border-black h-screen w-full ${isDarkMode ? 'bg-darkSecondary' : 'bg-secondary'}`}>
               <div className="m-2 font-semibold text-4xl">Please Connect with a Wallet to Continue!</div>
               <div className="m-2 font-bold text-5xl">Powered By BlockChain</div>
             </div>
