@@ -5,7 +5,7 @@ import Notification from "../layouts/Notification"
 
 import document from "../assets/document.png"
 
-const share = ({state, refresh, setDisplayRefresh}) => {
+const share = ({state, refresh, setDisplayRefresh, isDarkMode}) => {
 
     const [nftMetaData, setNftMetaData] = useState([]);
     const [defaultMetaData, setDefaultMetaData] = useState([]);
@@ -136,12 +136,12 @@ const share = ({state, refresh, setDisplayRefresh}) => {
 
     return (
         <>
-        <div className="flex flex-col bg-gray-600 h-screen w-screen items-center overflow-y-auto">
+        <div className={`flex flex-col h-screen w-screen items-center overflow-y-auto ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
             <div className="p-5 w-full flex justify-between">
                 <h2 className="text-2xl  text-white font-bold text-center">Share NFT/File</h2>
                 <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
             </div>
-            <div className="flex flex-col rounded-tl-2xl bg-white border-2 border-black h-full w-full">
+            <div className={`flex flex-col rounded-tl-2xl border-2 border-black h-screen w-full ${isDarkMode ? 'bg-darkSecondary' : 'bg-secondary'}`}>
                 {
                     selectedNft && <div className="flex items-center justify-center px-5 w-full h-[100px] shadow-md shadow-black">
                     <input value={addressTo} onChange={(e) => setAddressTo(e.target.value)} className="p-2 border-2 border-black w-full focus:bg-gray-100 font-bold rounded-md shadow-md shadow-black h-[50px]" placeholder="Ethereum Address" />
@@ -153,7 +153,7 @@ const share = ({state, refresh, setDisplayRefresh}) => {
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div onClick={() => selectNFT(nft)} className="p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black hover:bg-gray-400">
+                        <div onClick={() => selectNFT(nft)} className={`p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black ${isDarkMode ? 'hover:bg-darkSecondary' : 'hover:bg-secondary'}`}>
                             <div className="flex justify-end">
                                 <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
                                 <input type="radio" name="selectedNFT" checked={selectedNft === nft} onChange={() => selectNFT(nft)} />
@@ -169,12 +169,12 @@ const share = ({state, refresh, setDisplayRefresh}) => {
                         </div>
                     ))}
                 </div>
-                <button onClick={getShareList} className="h-[100px] bg-blue-400 hover:bg-blue-500 shadow-inner font-bold shadow-black" >Get Share List</button>
+                <button onClick={getShareList} className={`text-white h-[100px] shadow-inner font-bold shadow-black ${isDarkMode ? 'bg-darkPrimary hover:bg-darkSecondary' : 'bg-primary hover:bg-secondary'}`} >Get Share List</button>
             </div>
         </div>
 
         {
-            isListview && (<Listview title="Share List" list={shareList} close={closeListview} />)
+            isListview && (<Listview title="Share List" list={shareList} close={closeListview} isDarkMode={isDarkMode} />)
         }
 
         {
