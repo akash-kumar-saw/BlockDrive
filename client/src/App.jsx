@@ -18,7 +18,7 @@ const App = () => {
   const [refresh, setRefresh] = useState(0);
   const [displayRefresh, setDisplayRefresh] = useState(true);
   const [accessAddress, setAccessAddress] = useState("");
-  const[isDarkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)'));
+  const[isDarkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   const refreshPage = () => {
     setRefresh(refresh+1);
