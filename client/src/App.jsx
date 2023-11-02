@@ -18,10 +18,15 @@ const App = () => {
   const [refresh, setRefresh] = useState(0);
   const [displayRefresh, setDisplayRefresh] = useState(true);
   const [accessAddress, setAccessAddress] = useState("");
+  const [showSideBar, setSideBar] = useState(true);
   const[isDarkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   const refreshPage = () => {
     setRefresh(refresh+1);
+  }
+
+  const toogleSideBar = () => {
+    setSideBar(!showSideBar);
   }
   
   const saveState=(state)=>{
@@ -31,14 +36,14 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-gray-200">  
-        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} setDarkMode={setDarkMode}/>
+        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} setDarkMode={setDarkMode} showSideBar={showSideBar}/>
 
         { (state.address!=null) && 
           <>
           <Routes>
-            <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh} isDarkMode={isDarkMode}/>}/>
-            <Route exact path="/BlockDrive/Access" element={<Access state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} accessAddress={accessAddress} setAccessAddress={setAccessAddress} isDarkMode={isDarkMode}/>}/>
-            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode}/>}/>
+            <Route exact path="/BlockDrive/" element={<Home state={state} refresh={refresh} isDarkMode={isDarkMode} toogleSideBar={toogleSideBar}/>}/>
+            <Route exact path="/BlockDrive/Access" element={<Access state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} accessAddress={accessAddress} setAccessAddress={setAccessAddress} isDarkMode={isDarkMode} toogleSideBar={toogleSideBar}/>}/>
+            <Route exact path="/BlockDrive/Share" element={<Share state={state} refresh={refresh} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} toogleSideBar={toogleSideBar}/>}/>
           </Routes>
           <Refresh refreshPage={refreshPage} displayRefresh={displayRefresh}  isDarkMode={isDarkMode}/>
           </>
