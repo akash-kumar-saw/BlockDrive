@@ -8,7 +8,7 @@ import Notification from "./Notification"
 
 import bloackchain from '../assets/blockchain.png';
 
-const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode}) => {
+const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode, showSideBar}) => {
     const navigate = useNavigate();
 
     const [connected,setConnected]=useState(false);
@@ -152,23 +152,25 @@ const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode})
     
     return (
         <>
-        <div className={`flex flex-col h-screen w-[200px] items-center ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
-            <div className="flex p-5">
-                <img src={bloackchain} className="w-[40px] h-[40px]" />
-                <h2 className="text-2xl text-white font-bold text-center ml-2">BlockDrive</h2>
+        { showSideBar && (
+            <div className={`flex flex-col h-screen w-[200px] md:w-[300px] items-center ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
+                <div className="flex p-5">
+                    <img src={bloackchain} className="w-[40px] h-[40px]" />
+                    <h2 className="text-2xl text-white font-bold text-center ml-2">BlockDrive</h2>
+                </div>
+                <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-blue-400 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px] md:w-[175px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
+                <div className={`flex ${isDarkMode ? 'flex-row' : 'flex-row-reverse'} m-2 w-[150px] md:w-[175px] border-2 shadow-md shadow-black border-black rounded-xl bg-white `}>
+                    <button onClick={toogleDarkMode} className={` ${isDarkMode ? 'bg-darkPrimary':'bg-primary'}  h-auto rounded-l w-1/2 shadow-lg shadow-black border-2 border-black`}/>
+                    { isDarkMode ? <text className="text-xl font-bold w-1/2 p-2 text-center">Dark Mode</text> :
+                        <text className="text-xl font-bold w-1/2 p-2 text-center">Light Mode</text>
+                    }
+                </div>
+                <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] md:w-[175px] ${connected ? 'hover:bg-blue-400' : 'hover:bg-gray-600'} `}>Add NFT/File</button>
+                <button onClick={()=>{navigate('/BlockDrive/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] md:w-[250px] ${navigation=="Home" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'} `}>My Drive</button>
+                <button onClick={()=>{navigate('/BlockDrive/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] md:w-[250px] ${navigation=="Access" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'}`}>Access Manager</button>
+                <button onClick={()=>{navigate('/BlockDrive/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] md:w-[250px] ${navigation=="Share" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'}`}>Share NFT/File</button>
             </div>
-            <button onClick={connectWallet} disabled={connected} className={`${ connected ? 'bg-blue-400 animate-none' : 'bg-red-500 hover:bg-red-600 animate-bounce' } text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl w-[150px]`}>{ connected ? 'Connected' : 'Connect to MetaMask' }</button>
-            <div className={`flex ${isDarkMode ? 'flex-row' : 'flex-row-reverse'} m-2 w-[150px] border-2 shadow-md shadow-black border-black rounded-xl bg-white`}>
-                <button onClick={toogleDarkMode} className={` ${isDarkMode ? 'bg-darkPrimary':'bg-primary'}  h-auto rounded-l w-1/2 shadow-lg shadow-black border-2 border-black`}/>
-                { isDarkMode ? <text className="text-xl font-bold w-1/2 p-2 text-center">Dark Mode</text> :
-                    <text className="text-xl font-bold w-1/2 p-2 text-center">Light Mode</text>
-                }
-            </div>
-            <button onClick={openDialog} disabled={!connected} className={`text-xl font-bold text-center m-2 p-2 border-2 shadow-md shadow-black border-black rounded-xl bg-white w-[150px] ${connected ? 'hover:bg-blue-400' : 'hover:bg-gray-600'} `}>Add NFT/File</button>
-            <button onClick={()=>{navigate('/BlockDrive/'); setNavigation("Home")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] ${navigation=="Home" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'} `}>My Drive</button>
-            <button onClick={()=>{navigate('/BlockDrive/Access'); setNavigation("Access")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] ${navigation=="Access" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'}`}>Access Manager</button>
-            <button onClick={()=>{navigate('/BlockDrive/Share'); setNavigation("Share")}} disabled={!connected} className={`text-sm font-bold text-center m-2 p-2 shadow-md shadow-black border-2 border-black rounded-3xl w-[190px] ${navigation=="Share" ? 'bg-blue-400 hover:bg-blue-400' : 'bg-white hover:bg-gray-400'}`}>Share NFT/File</button>
-        </div>
+        )}
 
         {isDialogOpen && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-900 bg-opacity-50">
