@@ -21,12 +21,12 @@ BlockDrive is a decentralized File hosting platform built on the Ethereum blockc
 ```bash
 npm instal
 cd client
-npm install
+yarn install
 ```
 3. Start the Web Interface
 ```bash
 cd client
-npm start
+npm run dev
 ```
 
 ## Technologies Used
