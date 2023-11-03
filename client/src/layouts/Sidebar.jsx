@@ -8,11 +8,10 @@ import Notification from "./Notification"
 
 import bloackchain from '../assets/blockchain.png';
 
-const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode, showSideBar}) => {
+const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode, showSideBar, toogleSideBar}) => {
     const navigate = useNavigate();
 
     const [connected,setConnected]=useState(false);
-    const [accountAddress, setAccountAddress] = useState("");
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("");
@@ -93,11 +92,11 @@ const sidebar = ({state, saveState, setDisplayRefresh, isDarkMode, setDarkMode, 
                 setConnected(true);
                 setNavigation("Home");
                 navigate("/BlockDrive/");
-                setAccountAddress(accounts[0]);
                 saveState({web3:provider,contract:contract,address:accounts[0]});
 
+                toogleSideBar();
+
                 window.ethereum.on('accountsChanged', (accounts) => {
-                    setAccountAddress(accounts[0]);
                     saveState({web3:provider,contract:contract,address:accounts[0]});
                 });
 

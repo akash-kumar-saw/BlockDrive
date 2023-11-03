@@ -7,6 +7,8 @@ import Access from './components/Access'
 import Share from './components/Share'
 import Refresh from './layouts/Refresh'
 
+import MetaMask from './assets/metamask.png'
+
 const App = () => {
 
   const [state,setState]=useState({
@@ -36,7 +38,7 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-gray-200">  
-        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} setDarkMode={setDarkMode} showSideBar={showSideBar}/>
+        <Sidebar saveState={saveState} state={state} setDisplayRefresh={setDisplayRefresh} isDarkMode={isDarkMode} setDarkMode={setDarkMode} showSideBar={showSideBar} toogleSideBar={toogleSideBar}/>
 
         { (state.address!=null) && 
           <>
@@ -55,8 +57,9 @@ const App = () => {
               <h2 className="text-2xl text-white font-bold text-center">Made with 💖 by Akash Kumar Saw</h2>
             </div> 
             <div className={`flex flex-col rounded-tl-2xl items-center justify-center rounded-tl-2x border-2 border-black h-screen w-full ${isDarkMode ? 'bg-darkSecondary' : 'bg-secondary'}`}>
-              <div className="m-2 font-semibold text-4xl">Please Connect with a Wallet to Continue!</div>
-              <div className="m-2 font-bold text-5xl">Powered By BlockChain</div>
+              <img src={MetaMask} className="m-2 h-[100px] md:h-[200px]" />
+              <div className="m-2 font-semibold text-2xl md:text-4xl text-center">Please Connect to MetaMask to Continue!</div>
+              <div className="m-2 font-bold text-3xl md:text-5xl text-center">Powered By BlockChain</div>
             </div>
           </div>
         }

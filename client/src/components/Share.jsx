@@ -138,14 +138,14 @@ const share = ({state, refresh, setDisplayRefresh, isDarkMode, toogleSideBar}) =
     return (
         <>
         <div className={`flex flex-col h-screen w-screen items-center overflow-y-auto ${isDarkMode ? 'bg-darkPrimary' : 'bg-primary'}`}>
-            <div className="p-5 w-full flex justify-between items-center">
-                <div className="flex items-center">
-                    <div onClick={() => toogleSideBar()} className="rounded-lg bg-white/30 p-2 m-2 w-min">
-                        <HiMenuAlt2 size={34} />
-                    </div>
-                    <h2 className="text-2xl text-white font-bold text-center p-2">Share NFT/File</h2>
+            <div className="p-5 w-full flex items-center">
+                <div onClick={() => toogleSideBar()} className="rounded-lg bg-white/40 p-2 m-2 w-min">
+                    <HiMenuAlt2 size={34} />
                 </div>
-                <h2 className="text-white font-bold">{"Address : " + state.address}</h2>
+                <div className="flex flex-col md:flex-row items-start md:items-center md:justify-between  w-full">
+                    <h2 className="text-2xl text-white font-bold text-center px-2">Share NFT/File</h2>
+                    <h2 className="text-white font-bold px-2">{"Address : " + state.address}</h2>
+                </div> 
             </div>
             <div className={`flex flex-col rounded-t-2xl border-2 border-black h-screen w-full ${isDarkMode ? 'bg-darkSecondary' : 'bg-secondary'}`}>
                 {
