@@ -159,7 +159,7 @@ const share = ({state, refresh, setDisplayRefresh, isDarkMode, toogleSideBar}) =
                 </div>
                 <div className="flex flex-wrap justify-start overflow-y-auto p-5 h-full">
                     {nftMetaData.map((nft, index) => (
-                        <div onClick={() => selectNFT(nft)} className={`p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-gray-200 shadow-lg shadow-black ${isDarkMode ? 'hover:bg-darkSecondary' : 'hover:bg-secondary'}`}>
+                        <div onClick={() => selectNFT(nft)} className={`p-2 m-2 rounded-xl text-center w-[150px] h-min border-2 border-black bg-white/40 shadow-lg shadow-black ${isDarkMode ? 'hover:bg-darkSecondary' : 'hover:bg-secondary'}`}>
                             <div className="flex justify-end">
                                 <h3 className="font-bold overflow-hidden overflow-ellipsis">{nft.owner}</h3>
                                 <input type="radio" name="selectedNFT" checked={selectedNft === nft} onChange={() => selectNFT(nft)} />
