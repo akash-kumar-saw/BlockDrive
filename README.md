@@ -41,7 +41,7 @@ npm run dev
 
 ## Contributing
 
-I welcome contributions and feedback! If you'd like to contribute to this portfolio or suggest improvements, please follow these steps:
+I welcome contributions and feedback! If you'd like to contribute to this project or suggest improvements, please follow these steps:
 
 1. Explore: Go through the repository.
 2. Issues: Check existing issues or create new ones.
